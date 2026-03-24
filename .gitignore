@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# Environment files (keep secrets safe)
+.env
+.env.local
+.env.production
+*/.env
+*/.env.local
+*/.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Uploads (local files, not for version control)
+server/uploads/
+
+# Prisma generated
+server/prisma/migrations/
+
+# TypeScript cache
+*.tsbuildinfo

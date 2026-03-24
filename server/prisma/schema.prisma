@@ -1,0 +1,300 @@
+// Smart Farmer Marketplace - Prisma Schema
+// Database: PostgreSQL 15
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  FARMER
+  BUYER
+  ADMIN
+}
+
+enum KycStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum CropStatus {
+  ACTIVE
+  PAUSED
+  SOLD
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum OrderItemType {
+  CROP
+  STORE
+}
+
+enum StoreCategory {
+  SEEDS
+  FERTILIZERS
+  PESTICIDES
+  TOOLS
+  OTHER
+}
+
+enum PriceSource {
+  AGMARKNET
+  MANUAL
+}
+
+enum DeliveryEventType {
+  CONFIRMED
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum NotificationType {
+  EMAIL
+  SMS
+  INAPP
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(cuid())
+  role         Role      @default(BUYER)
+  name         String
+  phone        String    @unique
+  email        String    @unique
+  passwordHash String
+  address      String?
+  district     String?
+  state        String?
+  pincode      String?
+  geoLat       Float?
+  geoLng       Float?
+  isActive     Boolean   @default(true)
+  kycStatus    KycStatus @default(PENDING)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  farmerProfile  FarmerProfile?
+  buyerProfile   BuyerProfile?
+  crops          Crop[]          @relation("FarmerCrops")
+  buyerOrders    Order[]         @relation("BuyerOrders")
+  farmerOrders   Order[]         @relation("FarmerOrders")
+  notifications  Notification[]
+  refreshTokens  RefreshToken[]
+
+  @@index([email])
+  @@index([phone])
+  @@index([role])
+  @@index([state, district])
+}
+
+model FarmerProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  farmName      String
+  certification String?
+  rating        Float    @default(0)
+  totalRatings  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BuyerProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  company   String?
+  gstin     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Crop {
+  id               String     @id @default(cuid())
+  farmerId         String
+  name             String
+  variety          String?
+  grade            String?
+  description      String?
+  quantityKg       Float
+  pricePerKg       Float
+  minOrderKg       Float      @default(1)
+  images           String[]
+  locationState    String
+  locationDistrict String
+  availableFrom    DateTime
+  availableTo      DateTime
+  status           CropStatus @default(ACTIVE)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  farmer     User        @relation("FarmerCrops", fields: [farmerId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@index([name, locationDistrict, locationState])
+  @@index([pricePerKg])
+  @@index([status])
+  @@index([farmerId])
+}
+
+model Order {
+  id                   String        @id @default(cuid())
+  buyerId              String
+  farmerId             String
+  totalAmount          Float
+  currency             String        @default("INR")
+  status               OrderStatus   @default(PENDING)
+  paymentStatus        PaymentStatus @default(PENDING)
+  razorpayOrderId      String?       @unique
+  razorpayPaymentId    String?
+  razorpaySignature    String?
+  shippingAddressLine1 String
+  shippingDistrict     String
+  shippingState        String
+  shippingPincode      String
+  notes                String?
+  shippingLat          Float?
+  shippingLng          Float?
+  driverLat            Float?
+  driverLng            Float?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  buyer          User            @relation("BuyerOrders", fields: [buyerId], references: [id])
+  farmer         User            @relation("FarmerOrders", fields: [farmerId], references: [id])
+  items          OrderItem[]
+  deliveryEvents DeliveryEvent[]
+
+  @@index([buyerId, createdAt])
+  @@index([farmerId, createdAt])
+  @@index([status])
+}
+
+model OrderItem {
+  id            String        @id @default(cuid())
+  orderId       String
+  cropId        String?
+  productId     String?
+  type          OrderItemType
+  quantityKg    Float?
+  quantityUnits Int?
+  unitPrice     Float
+  totalPrice    Float
+
+  order   Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  crop    Crop?         @relation(fields: [cropId], references: [id])
+  product StoreProduct? @relation(fields: [productId], references: [id])
+}
+
+model StoreProduct {
+  id          String        @id @default(cuid())
+  name        String
+  category    StoreCategory
+  brand       String?
+  price       Float
+  stock       Int           @default(0)
+  images      String[]
+  description String?
+  attributes  Json?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([category])
+  @@index([brand])
+  @@index([name])
+}
+
+model PricePoint {
+  id          String      @id @default(cuid())
+  cropName    String
+  district    String
+  state       String
+  pricePerKg  Float
+  source      PriceSource @default(AGMARKNET)
+  observedAt  DateTime
+
+  @@index([cropName, district, state, observedAt])
+}
+
+model PriceSummary {
+  id             String   @id @default(cuid())
+  cropName       String
+  district       String
+  state          String
+  avg7d          Float
+  avg30d         Float
+  minPrice       Float    @default(0)
+  maxPrice       Float    @default(0)
+  lastUpdatedAt  DateTime @default(now())
+
+  @@unique([cropName, district, state])
+  @@index([cropName, district, state])
+}
+
+model DeliveryEvent {
+  id        String            @id @default(cuid())
+  orderId   String
+  eventType DeliveryEventType
+  timestamp DateTime          @default(now())
+  note      String?
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
