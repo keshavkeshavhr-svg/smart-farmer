@@ -26,12 +26,12 @@ services:
         generateValue: true
       # Add Razorypay, AWS, and Email keys in the Render Dashboard securely!
 
-  # PostgreSQL Database
-  - type: psql
-    name: smart-farmer-db
-    plan: free
-
   # Redis Instance
   - type: redis
     name: smart-farmer-redis
+    plan: free
+
+databases:
+  # PostgreSQL Database
+  - name: smart-farmer-db
     plan: free
