@@ -119,12 +119,6 @@ VITE_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
 VITE_MAPBOX_TOKEN=      # leave empty for Leaflet/OSM (no key required)
 ```
 
-## 👤 Default Admin Account
-
-After seeding:
-- **Email**: `admin@smartfarmer.in`
-- **Password**: `Admin@123`
-
 ## 🧪 Testing
 
 ```bash
