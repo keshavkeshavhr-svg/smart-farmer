@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Search, ShieldAlert, CheckCircle, Ban, Trash2 } from 'lucide-react';
 import { api } from '../../lib/api';
+import { getImageUrl } from '../../lib/imageUrl';
 import { useAppDispatch } from '../../store/hooks';
 import { addToast } from '../../store/slices/uiSlice';
 
@@ -125,7 +126,7 @@ export default function AdminCropsPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <img className="h-10 w-10 rounded-md object-cover border border-gray-200" src={crop.images[0] || 'https://via.placeholder.com/40'} alt="" />
+                          <img className="h-10 w-10 rounded-md object-cover border border-gray-200" src={getImageUrl(crop.images[0], 'https://placehold.co/40')} alt="" />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-bold text-gray-900">{crop.name}</div>

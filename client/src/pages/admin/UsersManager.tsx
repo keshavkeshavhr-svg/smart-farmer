@@ -22,8 +22,8 @@ export default function UsersManager() {
   });
 
   const toggleStatusMutation = useMutation({
-    mutationFn: async ({ id, status }: { id: string, status: string }) => {
-      return await api.patch(`/admin/users/${id}/status`, { status });
+    mutationFn: async ({ id, isActive }: { id: string, isActive: boolean }) => {
+      return await api.patch(`/admin/users/${id}/status`, { isActive });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
@@ -133,10 +133,10 @@ export default function UsersManager() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium ${
-                        user.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}>
-                        {user.status === 'ACTIVE' ? <CheckCircle className="w-3 h-3" /> : <ShieldAlert className="w-3 h-3" />}
-                        {user.status}
+                        {user.isActive ? <CheckCircle className="w-3 h-3" /> : <ShieldAlert className="w-3 h-3" />}
+                        {user.isActive ? 'ACTIVE' : 'SUSPENDED'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -144,14 +144,14 @@ export default function UsersManager() {
                         <button
                           onClick={() => toggleStatusMutation.mutate({ 
                             id: user.id, 
-                            status: user.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE' 
+                            isActive: !user.isActive 
                           })}
                           disabled={toggleStatusMutation.isPending}
                           className={`flex items-center gap-1 ml-auto text-xs font-semibold px-2.5 py-1.5 rounded-md border ${
-                            user.status === 'ACTIVE' ? 'border-red-200 text-red-700 hover:bg-red-50' : 'border-green-200 text-green-700 hover:bg-green-50'
+                            user.isActive ? 'border-red-200 text-red-700 hover:bg-red-50' : 'border-green-200 text-green-700 hover:bg-green-50'
                           }`}
                         >
-                          {user.status === 'ACTIVE' ? <><Ban className="w-3.5 h-3.5" /> Suspend</> : <><CheckCircle className="w-3.5 h-3.5" /> Activate</>}
+                          {user.isActive ? <><Ban className="w-3.5 h-3.5" /> Suspend</> : <><CheckCircle className="w-3.5 h-3.5" /> Activate</>}
                         </button>
                       )}
                     </td>

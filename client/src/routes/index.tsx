@@ -21,6 +21,7 @@ import OrderTracking from '../pages/dashboard/OrderTracking';
 import AddCrop from '../pages/dashboard/AddCrop';
 
 // Admin Routes
+import AdminLayout from '../components/layout/AdminLayout';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import UsersManager from '../pages/admin/UsersManager';
 import AdminCropsPage from '../pages/admin/AdminCropsPage';
@@ -59,11 +60,16 @@ export const router = createBrowserRouter([
         path: 'admin',
         element: <ProtectedRoute allowedRoles={['ADMIN']} />,
         children: [
-          { index: true, element: <AdminDashboard /> },
-          { path: 'users', element: <UsersManager /> },
-          { path: 'crops', element: <AdminCropsPage /> },
-          { path: 'store', element: <AdminStorePage /> },
-          { path: 'market', element: <AdminMarketPage /> },
+          {
+            element: <AdminLayout />,
+            children: [
+              { index: true, element: <AdminDashboard /> },
+              { path: 'users', element: <UsersManager /> },
+              { path: 'crops', element: <AdminCropsPage /> },
+              { path: 'store', element: <AdminStorePage /> },
+              { path: 'market', element: <AdminMarketPage /> },
+            ]
+          }
         ]
       }
     ]

@@ -312,7 +312,7 @@ export default function Checkout() {
               <ul className="divide-y divide-gray-100 px-6 py-2">
                 {items.map((item) => (
                   <li key={item.id} className="py-4 flex gap-4 items-center">
-                    <img src={item.image || 'https://via.placeholder.com/60'} alt={item.name} className="w-16 h-16 rounded-md object-cover border border-gray-200" />
+                    <img src={item.image || 'https://placehold.co/60'} alt={item.name} className="w-16 h-16 rounded-md object-cover border border-gray-200" />
                     <div className="flex-1">
                       <h3 className="text-sm font-medium text-gray-900">{item.name}</h3>
                       <p className="text-xs text-gray-500 mt-1">{item.type === 'CROP' ? 'Farm Crop' : 'Store Product'}</p>

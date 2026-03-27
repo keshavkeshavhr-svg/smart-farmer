@@ -106,7 +106,7 @@ export default function AdminStorePage() {
                      <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                            <div className="h-10 w-10 flex-shrink-0">
-                             <img className="h-10 w-10 rounded-md object-contain border border-gray-200" src={product.images[0] || 'https://via.placeholder.com/40'} alt="" />
+                             <img className="h-10 w-10 rounded-md object-contain border border-gray-200" src={product.images[0] || 'https://placehold.co/40'} alt="" />
                            </div>
                            <div className="ml-4">
                              <div className="text-sm font-bold text-gray-900">{product.name}</div>

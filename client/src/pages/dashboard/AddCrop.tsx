@@ -71,23 +71,11 @@ export default function AddCrop() {
     setPreviewUrls(prev => prev.filter((_, i) => i !== index));
   };
 
-  const uploadImages = async (): Promise<string[]> => {
-    const uploadedUrls: string[] = [];
-    for (const file of images) {
-      const formData = new FormData();
-      formData.append('file', file);
-      // In a real app, we'd use the presigned URL flow or local fallback. We'll use local fallback for MVP
-      const res = await api.post('/uploads/local', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }) as unknown as { url: string };
-      uploadedUrls.push(import.meta.env.VITE_API_URL?.replace('/api', '') + res.url);
-    }
-    return uploadedUrls;
-  };
-
   const mutation = useMutation({
-    mutationFn: async (data: CropFormValues & { images: string[] }) => {
-      return await api.post('/crops', data);
+    mutationFn: async (formData: FormData) => {
+      return await api.post('/crops', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
     },
     onSuccess: () => {
       dispatch(addToast({ type: 'success', title: 'Crop Listed', message: 'Your harvest is now live on the marketplace!' }));
@@ -106,13 +94,20 @@ export default function AddCrop() {
 
     try {
       setIsUploading(true);
-      const imageUrls = await uploadImages();
-      setIsUploading(false);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+           formData.append(key, value.toString());
+        }
+      });
+      images.forEach(file => {
+        formData.append('images', file);
+      });
 
-      mutation.mutate({ ...data, images: imageUrls });
+      await mutation.mutateAsync(formData);
+      setIsUploading(false);
     } catch (err) {
       setIsUploading(false);
-      dispatch(addToast({ type: 'error', title: 'Upload Failed', message: 'Could not upload images' }));
     }
   };
 

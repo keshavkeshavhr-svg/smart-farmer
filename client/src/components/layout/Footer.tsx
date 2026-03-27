@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Youtube, ArrowRight, Mail, MapPin, Phone, Heart } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, ArrowRight, Mail, MapPin, Phone, Heart, Github } from 'lucide-react';
 
 const footerLinks = {
   marketplace: [
@@ -61,11 +61,17 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Mail className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                <span>support@smartfarmer.in</span>
+                <span>keshavkeshavhr@gmail.com</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Phone className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                <span>+91-80-1234-5678</span>
+                <span>9916213050</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <Github className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                <a href="https://github.com/keshavkeshavhr" target="_blank" rel="noopener noreferrer" className="hover:text-primary-400 transition-colors">
+                  github.com/keshavkeshavhr
+                </a>
               </div>
             </div>
 

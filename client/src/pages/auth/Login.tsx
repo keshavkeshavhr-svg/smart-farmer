@@ -7,7 +7,6 @@ import { setCredentials } from '../../store/slices/authSlice';
 import { addToast } from '../../store/slices/uiSlice';
 
 const DEMO_ACCOUNTS = [
-  { label: 'Admin', email: 'admin@smartfarmer.in', password: 'Admin@123', icon: '⚙️', gradient: 'from-gray-700 to-gray-900', bg: 'bg-gray-50 hover:bg-gray-100 border-gray-200', text: 'text-gray-800' },
   { label: 'Farmer', email: 'ramu@farmer.in', password: 'Farmer@123', icon: '🌿', gradient: 'from-emerald-500 to-green-600', bg: 'bg-emerald-50 hover:bg-emerald-100 border-emerald-200', text: 'text-emerald-800' },
   { label: 'Buyer', email: 'freshmart@buyer.in', password: 'Buyer@123', icon: '🛒', gradient: 'from-blue-500 to-indigo-600', bg: 'bg-blue-50 hover:bg-blue-100 border-blue-200', text: 'text-blue-800' },
 ];

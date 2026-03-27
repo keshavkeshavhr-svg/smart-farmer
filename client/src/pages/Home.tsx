@@ -9,6 +9,7 @@ import {
 import { useRef, useEffect, useState } from 'react';
 import type { Variants } from 'framer-motion';
 
+
 /* ═══════════════════════════════════════════════
    HOOKS
    ═══════════════════════════════════════════════ */
@@ -134,11 +135,7 @@ const testimonials = [
   },
 ];
 
-const marqueeItems = [
-  'Tomato ₹32/kg ↑15%', 'Onion ₹28/kg ↓3%', 'Wheat ₹2,450/q ↑8%',
-  'Rice ₹3,100/q ↑5%', 'Cotton ₹7,200/q ↑12%', 'Potato ₹18/kg ↓2%',
-  'Soybean ₹4,800/q ↑6%', 'Sugarcane ₹350/q ↑3%',
-];
+
 
 const partners = ['Agmarknet', 'Razorpay', 'OpenWeatherMap', 'AWS', 'NABARD', 'IFFCO', 'ICAR'];
 
@@ -155,13 +152,13 @@ function StatCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="group relative flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50/80 transition-all duration-300"
+      className="group relative flex items-center gap-4 p-4 rounded-2xl hover:bg-white/[0.04] transition-all duration-300"
     >
       <div className={`flex items-center justify-center w-14 h-14 rounded-2xl ${stat.bg} ${stat.color} ring-1 ${stat.ring} group-hover:scale-110 transition-transform duration-300`}>
         <Icon className="w-6 h-6" />
       </div>
       <div>
-        <p className="text-3xl font-black text-gray-900 tabular-nums tracking-tight">
+        <p className="text-3xl font-black text-white tabular-nums tracking-tight">
           {stat.value >= 1000 ? `${(count / 1000).toFixed(count >= stat.value ? 0 : 1)}K` : count}
           <span className="text-primary-500 ml-0.5">{stat.suffix}</span>
         </p>
@@ -171,20 +168,7 @@ function StatCard({ stat, index }: { stat: typeof stats[0]; index: number }) {
   );
 }
 
-function MarqueeStrip() {
-  return (
-    <div className="relative overflow-hidden py-3 bg-gray-950 border-b border-white/5">
-      <div className="flex animate-[scroll_30s_linear_infinite] whitespace-nowrap">
-        {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-          <span key={i} className="mx-8 text-sm font-mono text-gray-400 flex items-center gap-2">
-            <span className={`w-1.5 h-1.5 rounded-full ${item.includes('↑') ? 'bg-emerald-400' : 'bg-red-400'}`} />
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
+
 
 /* ═══════════════════════════════════════════════
    HOME PAGE
@@ -198,12 +182,7 @@ export default function Home() {
   const typedText = useTypingEffect(['Zero Middlemen.', 'Maximum Profits.', 'AI-Powered.', 'Pan-India.'], 80, 40, 2500);
 
   return (
-    <div className="bg-white overflow-hidden selection:bg-primary-500 selection:text-white">
-
-      {/* ═══════════════════════════════════════
-          LIVE PRICE MARQUEE
-          ═══════════════════════════════════════ */}
-      <MarqueeStrip />
+    <div className="bg-gray-950 overflow-hidden selection:bg-primary-500 selection:text-white">
 
       {/* ═══════════════════════════════════════
           1 · HERO
@@ -326,14 +305,14 @@ export default function Home() {
         </motion.div>
 
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent z-20" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-gray-950 via-gray-950/80 to-transparent z-20" />
       </div>
 
       {/* ═══════════════════════════════════════
           2 · STATS
           ═══════════════════════════════════════ */}
       <div className="relative z-30 -mt-24 max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 bg-white rounded-3xl p-6 lg:p-8 border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 bg-gray-900/40 backdrop-blur-xl rounded-3xl p-6 lg:p-8 border border-white/5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
           {stats.map((stat, i) => (
             <StatCard key={i} stat={stat} index={i} />
           ))}
@@ -343,8 +322,15 @@ export default function Home() {
       {/* ═══════════════════════════════════════
           3 · FEATURES — BENTO GRID
           ═══════════════════════════════════════ */}
-      <section className="py-28 sm:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="relative py-28 sm:py-36 bg-gray-950 overflow-hidden">
+        {/* Advanced background elements */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-primary-600 rounded-full blur-[200px] mix-blend-screen" />
+          <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-cyan-500 rounded-full blur-[220px] mix-blend-screen -translate-y-1/2" />
+        </div>
+        <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -353,16 +339,16 @@ export default function Home() {
             className="text-center mb-20"
           >
             <motion.div variants={fadeUp}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 text-primary-700 text-xs font-bold uppercase tracking-[0.15em] mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] border border-white/[0.1] text-primary-400 text-xs font-bold uppercase tracking-[0.15em] mb-6 shadow-lg shadow-black/20">
                 <Zap className="w-3.5 h-3.5" /> Platform Features
               </span>
             </motion.div>
-            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 leading-[1.1]">
+            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
               Everything you need
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-emerald-500 to-cyan-500">to thrive</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-emerald-400 to-cyan-400">to thrive</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="mt-6 text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            <motion.p variants={fadeUp} className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
               A complete smart agriculture ecosystem — from price intelligence and AI predictions to secure payments and logistics.
             </motion.p>
           </motion.div>
@@ -380,9 +366,9 @@ export default function Home() {
                 <motion.div
                   variants={fadeUp}
                   key={i}
-                  className={`group relative bg-white rounded-3xl border border-gray-100 hover:border-gray-200 transition-all duration-500 overflow-hidden ${i === 0 ? 'md:col-span-2 lg:col-span-1' : ''}`}
+                  className={`group relative bg-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/[0.08] hover:border-white/[0.2] hover:bg-white/[0.08] transition-all duration-500 overflow-hidden shadow-2xl shadow-black/40 ${i === 0 ? 'md:col-span-2 lg:col-span-1' : ''}`}
                 >
-                  <Link to={f.path} className="block p-8 h-full w-full">
+                  <Link to={f.path} className="block p-8 h-full w-full relative z-10">
                     {/* Hover glow */}
                     <div className={`absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br ${f.color} rounded-full opacity-0 group-hover:opacity-[0.07] blur-3xl transition-all duration-700 group-hover:scale-150`} />
 
@@ -391,10 +377,10 @@ export default function Home() {
                       <Icon className="w-6 h-6" />
                     </div>
 
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">{f.title}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed mb-6">{f.desc}</p>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">{f.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-6 font-light">{f.desc}</p>
 
-                    <div className="flex items-center gap-2 text-primary-600 text-sm font-bold opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    <div className="flex items-center gap-2 text-primary-400 text-sm font-bold opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                       Explore <ArrowUpRight className="w-4 h-4" />
                     </div>
                   </Link>
@@ -408,8 +394,15 @@ export default function Home() {
       {/* ═══════════════════════════════════════
           4 · HOW IT WORKS
           ═══════════════════════════════════════ */}
-      <section className="py-28 bg-gradient-to-b from-gray-50 to-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="relative py-28 sm:py-36 bg-gray-950 overflow-hidden border-t border-white/5">
+        {/* Advanced background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600 rounded-full blur-[200px] mix-blend-screen" />
+          <div className="absolute bottom-0 left-1/3 w-[600px] h-[600px] bg-purple-600 rounded-full blur-[250px] mix-blend-screen" />
+        </div>
+        <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -418,20 +411,20 @@ export default function Home() {
             className="text-center mb-20"
           >
             <motion.div variants={fadeUp}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-[0.15em] mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] border border-white/[0.1] text-blue-400 text-xs font-bold uppercase tracking-[0.15em] mb-6 shadow-lg shadow-black/20">
                 <Award className="w-3.5 h-3.5" /> Simple 4-Step Process
               </span>
             </motion.div>
-            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900">
+            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white">
               Start trading in{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">minutes</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">minutes</span>
             </motion.h2>
           </motion.div>
 
           <div className="relative">
             {/* Animated connector */}
             <div className="hidden lg:block absolute top-24 left-[calc(12.5%+1.5rem)] right-[calc(12.5%+1.5rem)] h-0.5">
-              <div className="w-full h-full bg-gradient-to-r from-primary-300 via-blue-300 to-purple-300 rounded-full" />
+              <div className="w-full h-full bg-gradient-to-r from-primary-500/20 via-blue-500/20 to-purple-500/20 rounded-full" />
               <motion.div
                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary-500 to-blue-500 rounded-full"
                 initial={{ width: '0%' }}
@@ -452,14 +445,14 @@ export default function Home() {
                 const Icon = item.icon;
                 return (
                   <motion.div variants={fadeUp} key={i} className="relative text-center group">
-                    <div className="relative z-10 mx-auto w-20 h-20 rounded-3xl bg-white border-2 border-gray-100 group-hover:border-primary-400 flex items-center justify-center transition-all duration-500 shadow-lg group-hover:shadow-xl group-hover:shadow-primary-500/10 mb-8 group-hover:-translate-y-1">
-                      <Icon className="w-8 h-8 text-gray-400 group-hover:text-primary-600 transition-colors duration-300" />
-                      <span className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-emerald-400 text-[10px] font-black text-white flex items-center justify-center shadow-md">
+                    <div className="relative z-10 mx-auto w-20 h-20 rounded-3xl bg-white/[0.04] backdrop-blur-xl border-2 border-white/[0.08] group-hover:border-primary-500/50 flex items-center justify-center transition-all duration-500 shadow-2xl shadow-black/40 group-hover:shadow-primary-500/20 mb-8 group-hover:-translate-y-1">
+                      <Icon className="w-8 h-8 text-gray-400 group-hover:text-primary-400 transition-colors duration-300" />
+                      <span className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-gradient-to-br from-primary-400 to-cyan-400 text-[10px] font-black text-white flex items-center justify-center shadow-md shadow-black/30">
                         {item.step}
                       </span>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed max-w-[200px] mx-auto">{item.desc}</p>
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">{item.title}</h3>
+                    <p className="text-sm text-gray-400 leading-relaxed max-w-[200px] mx-auto font-light">{item.desc}</p>
                   </motion.div>
                 );
               })}
@@ -471,23 +464,30 @@ export default function Home() {
       {/* ═══════════════════════════════════════
           5 · MARKET INTELLIGENCE
           ═══════════════════════════════════════ */}
-      <section className="py-28 sm:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="relative py-28 sm:py-36 bg-gray-950 overflow-hidden border-t border-white/5">
+        {/* Advanced background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-600 rounded-full blur-[200px] mix-blend-screen" />
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-cyan-600 rounded-full blur-[250px] mix-blend-screen" />
+        </div>
+        <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <motion.div variants={fadeLeft}>
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-[0.15em] mb-6">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] border border-white/[0.1] text-emerald-400 text-xs font-bold uppercase tracking-[0.15em] mb-6 shadow-lg shadow-black/20">
                   <TrendingUp className="w-3.5 h-3.5" /> Market Intelligence
                 </span>
               </motion.div>
-              <motion.h2 variants={fadeLeft} className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 mb-6 leading-[1.1]">
+              <motion.h2 variants={fadeLeft} className="text-4xl sm:text-5xl font-black tracking-tight text-white mb-6 leading-[1.1]">
                 Never sell blind.
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
                   Know the true price.
                 </span>
               </motion.h2>
-              <motion.p variants={fadeLeft} className="text-lg text-gray-500 mb-8 leading-relaxed">
+              <motion.p variants={fadeLeft} className="text-lg text-gray-400 mb-8 leading-relaxed font-light">
                 Smart Farmer aggregates daily mandi prices from Agmarknet and uses AI to forecast upcoming trends. Maximize your harvest value with data.
               </motion.p>
               <motion.ul variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }} className="space-y-4 mb-8">
@@ -496,8 +496,8 @@ export default function Home() {
                   '7-day AI forecasts with 92% accuracy',
                   'Instant SMS alerts for price spikes',
                 ].map((item, i) => (
-                  <motion.li variants={fadeUp} key={i} className="flex items-center gap-3 text-gray-600 font-medium">
-                    <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
+                  <motion.li variants={fadeUp} key={i} className="flex items-center gap-3 text-gray-300 font-medium">
+                    <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
                       <Check className="w-4 h-4" />
                     </div>
                     {item}
@@ -505,7 +505,7 @@ export default function Home() {
                 ))}
               </motion.ul>
               <motion.div variants={fadeUp}>
-                <Link to="/market" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
+                <Link to="/market" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-bold text-sm hover:from-emerald-500 hover:to-cyan-500 transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02]">
                   Explore Market Prices <ArrowRight className="w-4 h-4" />
                 </Link>
               </motion.div>
@@ -518,21 +518,21 @@ export default function Home() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="relative"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-900/10 ring-1 ring-gray-100">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-white/10">
                 <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2670&auto=format&fit=crop" alt="Market data" className="w-full aspect-[4/3] object-cover" />
                 {/* Glass overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                  <div className="bg-white/90 backdrop-blur-2xl rounded-2xl p-5 border border-white/50 shadow-2xl">
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                  <div className="bg-gray-950/60 backdrop-blur-xl rounded-2xl p-5 border border-white/10 shadow-2xl">
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.15em]">AI Predicted — Tomato</p>
-                        <p className="text-2xl font-black text-gray-900">₹32.50<span className="text-sm font-medium text-gray-400 ml-1">/ kg</span></p>
+                        <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.15em]">AI Predicted — Tomato</p>
+                        <p className="text-2xl font-black text-white">₹32.50<span className="text-sm font-medium text-gray-400 ml-1">/ kg</span></p>
                       </div>
-                      <div className="h-11 w-11 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                      <div className="h-11 w-11 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center justify-center">
                         <TrendingUp className="w-5 h-5" />
                       </div>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-white/5">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: '85%' }}
@@ -549,8 +549,8 @@ export default function Home() {
                 </div>
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-blue-100 rounded-3xl -z-10 opacity-60" />
-              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-primary-100 rounded-3xl -z-10 opacity-60" />
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-cyan-500/20 blur-xl rounded-3xl -z-10" />
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-emerald-500/20 blur-xl rounded-3xl -z-10" />
             </motion.div>
           </div>
         </div>
@@ -559,8 +559,15 @@ export default function Home() {
       {/* ═══════════════════════════════════════
           6 · DIRECT TRADING
           ═══════════════════════════════════════ */}
-      <section className="py-28 sm:py-36 bg-gradient-to-b from-gray-50/50 to-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="relative py-28 sm:py-36 bg-gray-950 overflow-hidden border-t border-white/5">
+        {/* Advanced background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-orange-600 rounded-full blur-[200px] mix-blend-screen" />
+          <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-emerald-600 rounded-full blur-[250px] mix-blend-screen" />
+        </div>
+        <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -569,38 +576,38 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="order-last lg:order-first relative"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-900/10 ring-1 ring-gray-100">
-                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2574&auto=format&fit=crop" alt="Fresh produce" className="w-full aspect-[4/3] object-cover" />
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-white/10">
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2574&auto=format&fit=crop" alt="Fresh produce" className="w-full aspect-[4/3] object-cover opacity-90" />
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
-                  className="absolute top-5 right-5 bg-gradient-to-r from-primary-500 to-emerald-400 text-white font-bold py-2.5 px-5 rounded-2xl shadow-xl text-sm"
+                  className="absolute top-5 right-5 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold py-2.5 px-5 rounded-2xl shadow-xl shadow-black/50 text-sm ring-1 ring-white/20"
                 >
                   🤝 Direct to Buyer
                 </motion.div>
-                <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-xl px-5 py-3 rounded-2xl shadow-xl ring-1 ring-gray-100">
+                <div className="absolute bottom-5 left-5 bg-gray-950/80 backdrop-blur-xl px-5 py-3 rounded-2xl shadow-2xl shadow-black/50 ring-1 ring-white/10">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">Avg. Monthly Savings</p>
-                  <p className="text-xl font-black text-primary-600">₹12,500</p>
+                  <p className="text-xl font-black text-emerald-400">₹12,500</p>
                 </div>
               </div>
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-100 rounded-3xl -z-10 opacity-60" />
-              <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-emerald-100 rounded-3xl -z-10 opacity-60" />
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500/20 blur-xl rounded-3xl -z-10" />
+              <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-emerald-500/20 blur-xl rounded-3xl -z-10" />
             </motion.div>
 
             <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }} className="order-first lg:order-last">
               <motion.div variants={fadeRight}>
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 text-orange-700 text-xs font-bold uppercase tracking-[0.15em] mb-6">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] border border-white/[0.1] text-orange-400 text-xs font-bold uppercase tracking-[0.15em] mb-6 shadow-lg shadow-black/20">
                   <Store className="w-3.5 h-3.5" /> Direct Trading Hub
                 </span>
               </motion.div>
-              <motion.h2 variants={fadeRight} className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900 mb-6 leading-[1.1]">
+              <motion.h2 variants={fadeRight} className="text-4xl sm:text-5xl font-black tracking-tight text-white mb-6 leading-[1.1]">
                 Skip middlemen.
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">Keep your profits.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Keep your profits.</span>
               </motion.h2>
-              <motion.p variants={fadeRight} className="text-lg text-gray-500 mb-10 leading-relaxed">
+              <motion.p variants={fadeRight} className="text-lg text-gray-400 mb-10 leading-relaxed font-light">
                 Connect directly with commercial buyers, grocery chains, and local markets. Zero listing fees, forever.
               </motion.p>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-2 gap-4">
@@ -610,10 +617,10 @@ export default function Home() {
                   { icon: Truck, title: 'Logistics Help', desc: 'Integrated delivery partners' },
                   { icon: Award, title: 'Verified Buyers', desc: 'KYC-verified, genuine transactions' },
                 ].map((card, i) => (
-                  <motion.div variants={fadeUp} key={i} className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300">
-                    <card.icon className="w-6 h-6 text-primary-600 mb-3 group-hover:scale-110 transition-transform" />
-                    <h4 className="font-bold text-gray-900 mb-1 text-sm">{card.title}</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">{card.desc}</p>
+                  <motion.div variants={fadeUp} key={i} className="group bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/[0.08] hover:border-white/[0.2] hover:bg-white/[0.08] transition-all duration-300 shadow-2xl shadow-black/40 hover:shadow-orange-500/10">
+                    <card.icon className="w-6 h-6 text-orange-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <h4 className="font-bold text-white mb-1 text-sm">{card.title}</h4>
+                    <p className="text-xs text-gray-400 leading-relaxed font-light">{card.desc}</p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -687,18 +694,25 @@ export default function Home() {
       {/* ═══════════════════════════════════════
           8 · TESTIMONIALS
           ═══════════════════════════════════════ */}
-      <section className="py-28 sm:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="relative py-28 sm:py-36 bg-gray-950 overflow-hidden border-t border-white/5">
+        {/* Advanced background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute -top-40 right-1/4 w-[500px] h-[500px] bg-orange-600 rounded-full blur-[200px] mix-blend-screen" />
+          <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-amber-600 rounded-full blur-[250px] mix-blend-screen" />
+        </div>
+        <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-center mb-20">
             <motion.div variants={fadeUp}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 text-amber-700 text-xs font-bold uppercase tracking-[0.15em] mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.07] border border-white/[0.1] text-amber-400 text-xs font-bold uppercase tracking-[0.15em] mb-6 shadow-lg shadow-black/20">
                 <Heart className="w-3.5 h-3.5" /> Community Love
               </span>
             </motion.div>
-            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900">
+            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white">
               Loved by farmers
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">across India</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">across India</span>
             </motion.h2>
           </motion.div>
 
@@ -713,10 +727,10 @@ export default function Home() {
               <motion.div
                 variants={fadeUp}
                 key={i}
-                className="group relative bg-white rounded-3xl p-8 border border-gray-100 hover:shadow-2xl hover:shadow-gray-100 transition-all duration-500"
+                className="group relative bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/[0.08] hover:border-white/[0.2] hover:bg-white/[0.08] transition-all duration-500 shadow-2xl shadow-black/40 hover:shadow-orange-500/10"
               >
                 {/* Highlight badge */}
-                <div className="absolute -top-3 right-6 bg-gradient-to-r from-primary-500 to-emerald-400 text-white text-xs font-bold px-4 py-1 rounded-full shadow-md">
+                <div className="absolute -top-3 right-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-4 py-1 rounded-full shadow-md shadow-black/30">
                   {t.highlight}
                 </div>
 
@@ -725,12 +739,12 @@ export default function Home() {
                     <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-8 leading-relaxed text-[15px]">"{t.text}"</p>
-                <div className="flex items-center gap-3 pt-6 border-t border-gray-50">
-                  <img src={t.avatar} alt={t.name} className="w-11 h-11 rounded-xl object-cover ring-2 ring-gray-100" />
+                <p className="text-gray-400 mb-8 leading-relaxed text-[15px] font-light">"{t.text}"</p>
+                <div className="flex items-center gap-3 pt-6 border-t border-white/10">
+                  <img src={t.avatar} alt={t.name} className="w-11 h-11 rounded-xl object-cover ring-2 ring-white/10" />
                   <div>
-                    <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.role}</p>
+                    <p className="font-bold text-white text-sm">{t.name}</p>
+                    <p className="text-xs text-gray-500">{t.role}</p>
                   </div>
                 </div>
               </motion.div>

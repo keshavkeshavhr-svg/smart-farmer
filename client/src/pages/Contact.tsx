@@ -7,7 +7,7 @@ const faqs = [
   { q: 'What is the commission/fee structure?', a: 'Smart Farmer charges a flat 2% platform fee on each transaction. There are no hidden charges, listing fees, or subscription costs.' },
   { q: 'How does the AI price prediction work?', a: 'Our AI model analyzes 30 days of historical mandi prices from Agmarknet data to predict price trends for the upcoming 7 days. This helps farmers decide the best time to sell.' },
   { q: 'Can I track my order after purchase?', a: 'Yes! Go to Dashboard → Orders and click on any order to see real-time tracking with status updates from the farmer.' },
-  { q: 'How do I report a problem with an order?', a: 'Use the contact form below or email us at support@smartfarmer.in with your order ID. We respond within 24 hours.' },
+  { q: 'How do I report a problem with an order?', a: 'Use the contact form below or email us at keshavkeshavhr@gmail.com with your order ID. We respond within 24 hours.' },
 ];
 
 export default function Contact() {
@@ -40,14 +40,14 @@ export default function Contact() {
             <Mail className="w-6 h-6 text-primary-600" />
           </div>
           <h3 className="font-semibold text-gray-900">Email Us</h3>
-          <p className="text-sm text-gray-500 mt-1">support@smartfarmer.in</p>
+          <p className="text-sm text-gray-500 mt-1">keshavkeshavhr@gmail.com</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 text-center hover:shadow-md transition-shadow">
           <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <Phone className="w-6 h-6 text-green-600" />
           </div>
           <h3 className="font-semibold text-gray-900">Call Us</h3>
-          <p className="text-sm text-gray-500 mt-1">+91 80-1234-5678</p>
+          <p className="text-sm text-gray-500 mt-1">9916213050</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 text-center hover:shadow-md transition-shadow">
           <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">

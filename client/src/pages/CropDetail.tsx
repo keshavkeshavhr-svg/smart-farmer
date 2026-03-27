@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { MapPin, Star, ShieldCheck, ShoppingCart } from 'lucide-react';
 import { api } from '../lib/api';
+import { getImageUrl } from '../lib/imageUrl';
 import { useAppDispatch } from '../store/hooks';
 import { addItem } from '../store/slices/cartSlice';
 
@@ -39,7 +40,7 @@ export default function CropDetail() {
       name: `${crop.name} (${crop.variety})`,
       price: crop.pricePerKg,
       quantity: Number(quantity) || 1,
-      image: crop.images[0],
+      image: getImageUrl(crop.images[0]),
       maxAvailable: crop.quantityAvailable,
       farmerId: crop.farmer.id
     }));
@@ -59,7 +60,7 @@ export default function CropDetail() {
         <div className="flex flex-col gap-4">
           <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden bg-gray-100 border border-gray-200">
             <img 
-              src={crop.images[activeImage] || 'https://via.placeholder.com/800x600?text=No+Image'} 
+              src={getImageUrl(crop.images[activeImage], 'https://placehold.co/800x600?text=No+Image')} 
               alt={crop.name} 
               className="w-full h-full object-cover object-center"
             />
@@ -72,7 +73,7 @@ export default function CropDetail() {
                   onClick={() => setActiveImage(idx)}
                   className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-primary-500 ring-2 ring-primary-500/20 ring-offset-1' : 'border-transparent hover:border-gray-300'}`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover object-center" />
+                  <img src={getImageUrl(img)} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover object-center" />
                 </button>
               ))}
             </div>

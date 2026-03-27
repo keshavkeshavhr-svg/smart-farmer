@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Filter, Star, ChevronDown, Leaf } from 'lucide-react';
 import { api } from '../lib/api';
+import { getImageUrl } from '../lib/imageUrl';
 import { indianStates, getDistrictsByState } from '../data/indianStatesDistricts';
 
 interface Crop {
@@ -146,7 +147,7 @@ export default function BrowseCrops() {
                   <Link key={crop.id} to={`/crops/${crop.id}`} className="card group hover:shadow-primary-lg transition-all duration-300 hover:-translate-y-1">
                     <div className="aspect-[4/3] w-full overflow-hidden bg-gray-50 relative">
                       <img
-                        src={crop.images[0] || 'https://via.placeholder.com/400x300?text=No+Image'}
+                        src={getImageUrl(crop.images[0], 'https://placehold.co/400x300?text=No+Image')}
                         alt={crop.name}
                         className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                       />
